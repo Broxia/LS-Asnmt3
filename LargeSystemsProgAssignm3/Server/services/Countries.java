@@ -58,9 +58,7 @@ public class Countries extends ServerResource{
 		} 
 		Map<String, Object> dataModel = new HashMap<>(1);
 		dataModel.put("countries", countries);
-//		initialize();
 		
-//		Template temp = engine.getTemplate("Templates/CountriesTemplate.html");
 		Configuration configuration = new Configuration();
 		try {
 			configuration.setDirectoryForTemplateLoading(new File("Server/templates/"));
@@ -68,15 +66,7 @@ public class Countries extends ServerResource{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//		FileRepresentation template = new FileRepresentation("/templates/CountriesTemplate.html", MediaType.TEXT_HTML, 3600);
 		TemplateRepresentation template = new TemplateRepresentation("CountriesTemplate.html", configuration, dataModel, MediaType.TEXT_HTML);
 		return template;
 	}
-	
-//	private void initialize(){
-//		engine = new VelocityEngine();
-//		engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-//		engine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
-//		engine.init();
-//	}
 }
