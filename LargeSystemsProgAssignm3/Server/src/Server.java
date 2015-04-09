@@ -23,7 +23,6 @@ public class Server extends Application{
 	public synchronized Restlet createInboundRoot() {
 		Router router = new Router(getContext());
 
-        // Country service
         router.attach("/countries/{countryName}", CountryInfo.class);
         router.attach("/countries", Countries.class);
        

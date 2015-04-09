@@ -29,7 +29,6 @@ import freemarker.template.Configuration;
 
 public class CountryInfo extends ServerResource {
 	private static String URL;
-	private static String lastInput;
 	@Get
 	public Representation represent() {
 		BufferedReader reader = null;
@@ -37,10 +36,7 @@ public class CountryInfo extends ServerResource {
 		
 		List<Object> info = new ArrayList<Object>();
 		String userInput = getRequest().getAttributes().get("countryName").toString().toLowerCase();
-//		if(!userInput.equals(lastInput)){
-			URL = "http://restcountries.eu/rest/v1/name/" + userInput;
-//			lastInput = userInput;
-//		}
+		URL = "http://restcountries.eu/rest/v1/name/" + userInput;
 		
 		try (InputStream input = new URL(URL).openStream()){
 			reader = new BufferedReader(new InputStreamReader(input, Charset.forName("UTF-8")));
