@@ -1,15 +1,16 @@
 package services;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
@@ -17,19 +18,24 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.restlet.data.MediaType;
+import org.restlet.ext.freemarker.TemplateRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.template.Configuration;
+
 public class Countries extends ServerResource{
 	private static final String URL = "http://restcountries.eu/rest/v1/all";
+	
 	
 	@Get
 	public Representation represent() {
 		BufferedReader reader = null;
 		JSONParser parser = new JSONParser();
 		
-		ArrayList<String> countries = new ArrayList<String>();
+		List<String> countries = new ArrayList<String>();
 		
 		try (InputStream input = new URL(URL).openStream()){
 			reader = new BufferedReader(new InputStreamReader(input, Charset.forName("UTF-8")));
@@ -52,6 +58,25 @@ public class Countries extends ServerResource{
 		} 
 		Map<String, Object> dataModel = new HashMap<>(1);
 		dataModel.put("countries", countries);
-		return new org.restlet.representation.ObjectRepresentation<Serializable>((Serializable) dataModel, MediaType.TEXT_HTML);
+//		initialize();
+		
+//		Template temp = engine.getTemplate("Templates/CountriesTemplate.html");
+		Configuration configuration = new Configuration();
+		try {
+			configuration.setDirectoryForTemplateLoading(new File("Server/templates/"));
+            configuration.setObjectWrapper(new BeansWrapper());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+//		FileRepresentation template = new FileRepresentation("/templates/CountriesTemplate.html", MediaType.TEXT_HTML, 3600);
+		TemplateRepresentation template = new TemplateRepresentation("CountriesTemplate.html", configuration, dataModel, MediaType.TEXT_HTML);
+		return template;
 	}
+	
+//	private void initialize(){
+//		engine = new VelocityEngine();
+//		engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+//		engine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+//		engine.init();
+//	}
 }
