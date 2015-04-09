@@ -17,6 +17,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.restlet.data.CharacterSet;
 import org.restlet.data.MediaType;
 import org.restlet.ext.freemarker.TemplateRepresentation;
 import org.restlet.representation.Representation;
@@ -47,8 +48,6 @@ public class Countries extends ServerResource{
 				String name = (String) country.get("name");
 				countries.add(name);
 			}
-			
-			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -67,6 +66,7 @@ public class Countries extends ServerResource{
 			e.printStackTrace();
 		}
 		TemplateRepresentation template = new TemplateRepresentation("CountriesTemplate.html", configuration, dataModel, MediaType.TEXT_HTML);
+		template.setCharacterSet(CharacterSet.UTF_8);
 		return template;
 	}
 }
