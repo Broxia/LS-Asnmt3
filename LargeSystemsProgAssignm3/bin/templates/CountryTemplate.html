@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html
+	<head>
+		<title>Country info</title>
+	</head>
+	<body>
+		<h1>Welcome to ${name}!</h1>
+		<p>The capital of ${name} is: ${capital} </p>
+		<p>The populations is: ${population} </p>
+		<p>In ${name} they speak ${language} </p>
+		
+		<div id="content"></div>
+	<script>
+      function hndlr(response) {
+      for (var i = 0; i < response.items.length; i++) {
+        var item = response.items[i];
+        // in production code, item.htmlTitle should have the HTML entities escaped.
+        document.getElementById("content").innerHTML += "<br>" + item.htmlTitle;
+      }
+    }
+    </script>
+    <script src="https://www.googleapis.com/customsearch/v1?key=<span class="apiparam">AIzaSyCOYK3MadKL-d3tM02P0WwANnibUmuUv88</span>&amp;cx=017576662512468239146:omuauf_lfve&amp;q=${name}&amp;callback=hndlr">
+    </script>
+	</body>
+</html>
